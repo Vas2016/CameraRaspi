@@ -1,24 +1,27 @@
 import numpy as np
 import cv2 as cv
 import argparse
+
+from ConturDetecter import *
+from Utils import *
+
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--camera", type=int, default=0,
+	help="camera")
+ap.add_argument("-b", "--blocks", type=int, default=4,
 	help="camera")
 args = vars(ap.parse_args())
 
 cam = cv.VideoCapture(args["camera"])
 
+Detecters=[]
+blocks = args["blocks"]
 
-def getContourCenter(contour):
-    M = cv.moments(contour)
-        
-    if M["m00"] == 0:
-        return 0
-        
-    x = int(M["m10"]/M["m00"])
-    y = int(M["m01"]/M["m00"])
-        
-    return [x,y]
+for q in range(blocks):
+    Detecters.append(ConturDetecter())
+
+
 def getLinePose(image):
     imgray = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
     r, thresh = cv.threshold(imgray,100,255,cv.THRESH_BINARY_INV)
@@ -59,11 +62,13 @@ while True:
     # img = cv.cvtColor(frame,cv.COLOR_BGR2GRAY) #Convert to Gray Scale
      #Get Threshold
     #thresh = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,13,7)
-    e = []
-    images = []
-    getLinePoseMulti(frame, images, e, 4)
-    print(e)
-    cv.imshow('frame', frame)
+    # e = []
+    # images = []
+    # getLinePoseMulti(frame, images, e, 4)
+    # print(e)
+    SlicePart(frame, Detecters, blocks)
+    img = RepackImages(Detecters)
+    cv.imshow('frame', img)
     # cv.imshow('0', images[0])
     # cv.imshow('1', images[1])
     # cv.imshow('2', images[2])
