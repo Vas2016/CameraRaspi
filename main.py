@@ -1,9 +1,13 @@
 import numpy as np
 import cv2 as cv
 import argparse
+import threading
 
 from ConturDetecter import *
 from Utils import *
+
+frame = None
+
 
 
 ap = argparse.ArgumentParser()
@@ -14,6 +18,16 @@ ap.add_argument("-b", "--blocks", type=int, default=4,
 args = vars(ap.parse_args())
 
 cam = cv.VideoCapture(args["camera"])
+
+def getFrame():
+    global frame
+    ret, frame = cam.read()
+
+t1 = threading.Thread(target=getFrame)
+t1.daemon = True
+t1.start()
+
+
 
 Detecters=[]
 blocks = args["blocks"]
@@ -26,7 +40,7 @@ for q in range(blocks):
     e.append(0)
 
 while True:
-    ret, frame = cam.read()
+    
     # img = cv.cvtColor(frame,cv.COLOR_BGR2GRAY) #Convert to Gray Scale
      #Get Threshold
     #thresh = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,13,7)
