@@ -26,11 +26,12 @@ for q in range(blocks):
 cam = cv.VideoCapture(args["camera"])
 
 def getFrame():
-    global frame, Detecters, blocks, e
-    if frame != None: 
-        MultiLines(frame, Detecters, blocks, e)
-        cv.imshow('frame', frame)
-    print(e)
+    while (1):
+        global frame, Detecters, blocks, e
+        if frame != None: 
+            MultiLines(frame, Detecters, blocks, e)
+            cv.imshow('frame', frame)
+        print(e)
 
 t1 = threading.Thread(target=getFrame)
 t1.daemon = True
