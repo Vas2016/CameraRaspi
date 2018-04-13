@@ -26,8 +26,9 @@ for q in range(blocks):
 cam = cv.VideoCapture(args["camera"])
 
 def getFrame():
+    global frame, Detecters, blocks, e
     while (1):
-        global frame, Detecters, blocks, e
+        
         if frame != None: 
             MultiLines(frame, Detecters, blocks, e)
             cv.imshow('frame', frame)
@@ -53,7 +54,7 @@ while True:
     
     # img = RepackImages(Detecters)
     
-    # cv.imshow('0', images[0])
+    cv.imshow('0', frame)
     # cv.imshow('1', images[1])
     # cv.imshow('2', images[2])
     if cv.waitKey(1) & 0xFF == ord('q'):
