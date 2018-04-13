@@ -31,7 +31,7 @@ class ConturDetecter:
                 #     self.correctMainContour(self.prev_cX)
             else:
                 self.contourCenterX = 0
-            self.e = (self.middleX - self.contourCenterX)*1.5 / (self.width / 200)
+            self.e = (self.middleX - self.contourCenterX)*1.5 / ((self.width - self.middleX) / 100)
             self.dir =  int((self.middleX-self.contourCenterX) * self.getContourExtent(self.MainContour))
             
             cv.drawContours(self.image,self.MainContour,-1,(0,255,0),3) #Draw Contour GREEN

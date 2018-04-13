@@ -4,6 +4,8 @@ import argparse
 import threading
 import time
 import socket
+# from imutils.video import VideoStream
+from imutils.video import WebcamVideoStream
 
 from ConturDetecter import *
 from Utils import *
@@ -26,7 +28,9 @@ e = []
 for q in range(blocks):
     e.append(0)
 sock.connect(('169.254.253.86', 4090))
-cam = cv.VideoCapture(args["camera"])
+# cam = cv.VideoCapture(args["camera"])
+
+cap = WebcamVideoStream(src=args["camera"]).start()
 
 def send_data():
     global e
@@ -45,10 +49,11 @@ time.sleep(1)
 
 
 while True:
-    ret, frame = cam.read()
+    # ret, frame = cam.read()
+    frame = cap.read()
     MultiLines(frame, Detecters, blocks, e)
     cv.imshow('frame', frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
-cam.release()
+# cam.release()
 cv.destroyAllWindows()
