@@ -49,6 +49,7 @@ while True:
     # images = []
     # getLinePoseMulti(frame, images, e, 4)
     # 
+    global frame
     MultiLines(frame, Detecters, blocks, e)
     cv.imshow('frame', frame)
     
