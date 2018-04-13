@@ -6,11 +6,6 @@ import time
 
 from ConturDetecter import *
 from Utils import *
-
-frame = None
-
-
-
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--camera", type=int, default=0,
 	help="camera")
@@ -18,10 +13,20 @@ ap.add_argument("-b", "--blocks", type=int, default=4,
 	help="camera")
 args = vars(ap.parse_args())
 
+
+frame = None
+Detecters=[]
+blocks = args["blocks"]
+for q in range(blocks):
+    Detecters.append(ConturDetecter())
+e = []
+for q in range(blocks):
+    e.append(0)
+
 cam = cv.VideoCapture(args["camera"])
 
 def getFrame():
-    global frame
+    global frame, Detecters, blocks, e
     MultiLines(frame, Detecters, blocks, e)
     cv.imshow('frame', frame)
     
@@ -33,15 +38,6 @@ t1.start()
 time.sleep(1)
 
 
-Detecters=[]
-blocks = args["blocks"]
-
-for q in range(blocks):
-    Detecters.append(ConturDetecter())
-
-e = []
-for q in range(blocks):
-    e.append(0)
 
 while True:
     
