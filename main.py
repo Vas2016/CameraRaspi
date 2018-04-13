@@ -40,7 +40,7 @@ def send_data():
 t1 = threading.Thread(target=send_data)
 t1.daemon = True
 t1.start()
-# time.sleep(1)
+time.sleep(1)
 
 
 
