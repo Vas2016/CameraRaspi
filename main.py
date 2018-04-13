@@ -32,9 +32,9 @@ def send_data():
     global e
     while True:
         print(e)
-        e_abs = map(abs, e)
-        e_max = max(e_abs)
-        sock.send(str(str(int(e_max)) + '@1').encode('utf-8'))
+        # e_abs = map(abs, e)
+        e_sent = (e[0] + e[1] + e[2] + e[3]) / 4
+        sock.send(str(str(float(e_sent)) + '@1').encode('utf-8'))
         time.sleep(0.08)
 
 t1 = threading.Thread(target=send_data)
