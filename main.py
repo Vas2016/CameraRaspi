@@ -29,7 +29,7 @@ def getFrame():
     global frame, Detecters, blocks, e
     while (1):
         
-        if frame != None: 
+        if frame: 
             MultiLines(frame, Detecters, blocks, e)
             cv.imshow('frame', frame)
         print(e)
