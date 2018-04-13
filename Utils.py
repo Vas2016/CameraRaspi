@@ -3,7 +3,7 @@ import cv2
 import time
 from ConturDetecter import *
 
-def SlicePart(im, images, slices):
+def MultiLines(im, images, slices, errors):
     height, width = im.shape[:2]
     sl = int(height/slices);
     
@@ -12,6 +12,7 @@ def SlicePart(im, images, slices):
         crop_img = im[part:part+sl, 0:width]
         images[i].image = crop_img
         images[i].Process()
+        errors[i] = images[i].e
     
 def RepackImages(images):
     img = images[0].image

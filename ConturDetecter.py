@@ -6,6 +6,7 @@ class ConturDetecter:
     def __init__(self):
         self.image = None
         self.contourCenterX = 0
+        self.e = 0
         self.MainContour = None
         
     def Process(self):
@@ -30,7 +31,7 @@ class ConturDetecter:
                 #     self.correctMainContour(self.prev_cX)
             else:
                 self.contourCenterX = 0
-            
+            self.e = self.middleX - self.contourCenterX
             self.dir =  int((self.middleX-self.contourCenterX) * self.getContourExtent(self.MainContour))
             
             cv.drawContours(self.image,self.MainContour,-1,(0,255,0),3) #Draw Contour GREEN
@@ -38,7 +39,8 @@ class ConturDetecter:
             cv.circle(self.image, (self.middleX, self.middleY), 3, (0,0,255), -1) #Draw middle circle RED
             
             font = cv.FONT_HERSHEY_SIMPLEX
-            cv.putText(self.image,str(self.middleX-self.contourCenterX),(self.contourCenterX+20, self.middleY), font, 1,(200,0,200),2,cv.LINE_AA)
+            cv.putText(self.image,str(self.e),(self.contourCenterX+20, self.middleY), font, 1,(200,0,200),2,cv.LINE_AA)
+            cv.putText(self.image,str(self.dir),(self.contourCenterX+20, self.middleY-30), font, 1,(200,0,200),2,cv.LINE_AA)
             cv.putText(self.image,"Weight:%.3f"%self.getContourExtent(self.MainContour),(self.contourCenterX+20, self.middleY+35), font, 0.5,(200,0,200),1,cv.LINE_AA)
         
     def getContourCenter(self, contour):
