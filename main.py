@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 import argparse
 import threading
+import time
 
 from ConturDetecter import *
 from Utils import *
@@ -26,7 +27,7 @@ def getFrame():
 t1 = threading.Thread(target=getFrame)
 t1.daemon = True
 t1.start()
-
+time.sleep(1)
 
 
 Detecters=[]
