@@ -3,6 +3,7 @@ import cv2 as cv
 import argparse
 import threading
 import time
+import socket
 
 from ConturDetecter import *
 from Utils import *
@@ -13,7 +14,9 @@ ap.add_argument("-b", "--blocks", type=int, default=4,
 	help="camera")
 args = vars(ap.parse_args())
 
+sock = socket.socket()
 
+complited = False
 frame = None
 Detecters=[]
 blocks = args["blocks"]
@@ -22,41 +25,29 @@ for q in range(blocks):
 e = []
 for q in range(blocks):
     e.append(0)
-
+sock.connect(('169.254.253.86', 4090))
 cam = cv.VideoCapture(args["camera"])
 
-def getFrame():
-    global frame, Detecters, blocks, e
-    while (1):
-        
-        if frame: 
-            MultiLines(frame, Detecters, blocks, e)
-            cv.imshow('frame', frame)
+def send_data():
+    global e
+    while True:
         print(e)
+        e_abs = map(abs, e)
+        e_max = max(e_abs)
+        sock.send(str(str(e_max) + '@1').encode('utf-8'))
+        time.sleep(0.08)
 
-t1 = threading.Thread(target=getFrame)
+t1 = threading.Thread(target=send_data)
 t1.daemon = True
 t1.start()
-time.sleep(1)
+# time.sleep(1)
 
 
 
 while True:
-    
-    # img = cv.cvtColor(frame,cv.COLOR_BGR2GRAY) #Convert to Gray Scale
-     #Get Threshold
-    #thresh = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,13,7)
-    
-    # images = []
-    # getLinePoseMulti(frame, images, e, 4)
-    # 
     ret, frame = cam.read()
-    
-    # img = RepackImages(Detecters)
-    
-    cv.imshow('0', frame)
-    # cv.imshow('1', images[1])
-    # cv.imshow('2', images[2])
+    MultiLines(frame, Detecters, blocks, e)
+    cv.imshow('frame', frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 cam.release()
