@@ -27,9 +27,9 @@ cam = cv.VideoCapture(args["camera"])
 
 def getFrame():
     global frame, Detecters, blocks, e
-    MultiLines(frame, Detecters, blocks, e)
-    cv.imshow('frame', frame)
-    
+    if frame != None: 
+        MultiLines(frame, Detecters, blocks, e)
+        cv.imshow('frame', frame)
     print(e)
 
 t1 = threading.Thread(target=getFrame)
