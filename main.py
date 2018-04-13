@@ -22,7 +22,10 @@ cam = cv.VideoCapture(args["camera"])
 
 def getFrame():
     global frame
-    ret, frame = cam.read()
+    MultiLines(frame, Detecters, blocks, e)
+    cv.imshow('frame', frame)
+    
+    print(e)
 
 t1 = threading.Thread(target=getFrame)
 t1.daemon = True
@@ -49,11 +52,8 @@ while True:
     # images = []
     # getLinePoseMulti(frame, images, e, 4)
     # 
-    global frame
-    MultiLines(frame, Detecters, blocks, e)
-    cv.imshow('frame', frame)
+    ret, frame = cam.read()
     
-    print(e)
     # img = RepackImages(Detecters)
     
     # cv.imshow('0', images[0])
