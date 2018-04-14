@@ -20,7 +20,7 @@ ap.add_argument("-b", "--blocks", type=int, default=4,
 	help="camera")
 args = vars(ap.parse_args())
 
-sock = socket.socket()
+# sock = socket.socket()
 
 complited = False
 frame = None
@@ -37,15 +37,17 @@ motor_r = 1
 prev_e = []
 itg = 0
 SP_SPEED = 40
+EV3_IP = "10.42.0.3"
+EV3_PORT = 5090
 
-client = udp_client.SimpleUDPClient(args.ip, args.port)
+client = udp_client.SimpleUDPClient(EV3_IP, EV3_PORT)
 
 # time.sleep(1)
 # sock.connect(('169.254.253.86', 4090))
 cap = cv.VideoCapture(args["camera"])
 
 # cap = WebcamVideoStream(src=args["camera"]).start()
-def data_to_send(err):
+# def data_to_send(err):
     # global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     # return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
 def send_data():
