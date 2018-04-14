@@ -55,7 +55,7 @@ def send_data():
         m1_speed = SP_SPEED - pid
         prev_e = e_now
         sock.send(data_to_send(e_now).encode('utf-8'))
-        time.sleep(0.08)
+        time.sleep(0.1)
 
 t1 = threading.Thread(target=send_data)
 t1.daemon = True

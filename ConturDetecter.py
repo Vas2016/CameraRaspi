@@ -31,8 +31,8 @@ class ConturDetecter:
                 #     self.correctMainContour(self.prev_cX)
             else:
                 self.contourCenterX = 0
-            self.e = -(self.middleX - self.contourCenterX) / ((self.width - self.middleX) / 100)
-            self.dir =  int((self.middleX-self.contourCenterX) * self.getContourExtent(self.MainContour))
+            self.e_q = -(self.middleX - self.contourCenterX) / ((self.width - self.middleX) / 100)
+            self.e =  int((self.middleX-self.contourCenterX) * self.getContourExtent(self.MainContour))
             
             cv.drawContours(self.image,self.MainContour,-1,(0,255,0),3) #Draw Contour GREEN
             cv.circle(self.image, (self.contourCenterX, self.middleY), 7, (255,255,255), -1) #Draw dX circle WHITE
