@@ -50,9 +50,10 @@ cap = cv.VideoCapture(args["camera"])
 # def data_to_send(err):
     # global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     # return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
+qwe = True
 def send_data():
-    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
-    while True:
+    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED, qwe
+    while qwe:
         print(e)
         # e_abs = map(abs, e)
         # e_now = (e[0] + e[1] + e[2] + e[3]) / 4
@@ -67,15 +68,21 @@ def send_data():
         m1_speed = SP_SPEED - itog
         prev_e = e
         # sock.send(data_to_send(e_now).encode('utf-8'))
+        
         client.send_message("/m0", m0_speed)
         time.sleep(0.02)
         client.send_message("/m1", m1_speed)
         time.sleep(0.02)
-
+time.sleep(1)
+client.send_message("/m_stop", 1)
+time.sleep(0.02)
+# client.send_message("/m_stop", 0)
+# time.sleep(0.02)
 t1 = threading.Thread(target=send_data)
 t1.daemon = True
 t1.start()
-time.sleep(1)
+
+# time.sleep(1)
 
 
 
@@ -88,7 +95,13 @@ while True:
     # else:
     #     cap = WebcamVideoStream(src=args["camera"]).start()
     if cv.waitKey(1) & 0xFF == ord('q'):
+        qwe = 0
         break
+t1._delete()
+client.send_message("/m_stop", 0)
+time.sleep(0.02)
+client.send_message("/m_stop", 0)
+time.sleep(0.02)
 cap.release()
-cap.stop()
+# cap.stop()
 cv.destroyAllWindows()
