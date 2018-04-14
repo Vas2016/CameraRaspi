@@ -49,7 +49,7 @@ def send_data():
         p = e_now
         d = e_now - prev_e
         itg = itg + e_now
-        pid = p*0.5 + d*10
+        pid = p*0.5 + d*4
         print('pid', pid)
         m0_speed = SP_SPEED + pid
         m1_speed = SP_SPEED - pid
