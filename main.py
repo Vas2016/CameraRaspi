@@ -38,6 +38,7 @@ sock.connect(('169.254.253.86', 4090))
 
 cap = WebcamVideoStream(src=args["camera"]).start()
 def data_to_send(err):
+    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
 def send_data():
     global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
