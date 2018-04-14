@@ -27,19 +27,33 @@ for q in range(blocks):
 e = []
 for q in range(blocks):
     e.append(0)
+m0_speed = 0
+m1_speed = 0
+motor_r = 1
+prev_e = 0
+itg = 0
+SP_SPEED = 40
 sock.connect(('169.254.253.86', 4090))
 # cam = cv.VideoCapture(args["camera"])
 
 cap = WebcamVideoStream(src=args["camera"]).start()
-
+def data_to_send(err)
+    return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
 def send_data():
-    global e
+    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     while True:
         print(e)
         # e_abs = map(abs, e)
-        e_sent = (e[0] + e[1] + e[2] + e[3]) / 4
-        sock.send(str(str(float(e_sent)) + '@1').encode('utf-8'))
-        time.sleep(0.08)
+        e_now = (e[0] + e[1] + e[2] + e[3]) / 4
+        p = e_now
+        d = e_now - prev_e
+        itg = itg + e_now
+        pid = p*0.5 + d*10
+        m0_speed = SP_SPEED + pid
+        m1_speed = SP_SPEED - pid
+        prev_e = e_now
+        sock.send(data_to_send(e_now)).encode('utf-8'))
+        time.sleep(0.02)
 
 t1 = threading.Thread(target=send_data)
 t1.daemon = True
