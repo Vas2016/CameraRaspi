@@ -67,8 +67,9 @@ time.sleep(1)
 while True:
     # ret, frame = cam.read()
     frame = cap.read()
-    MultiLines(frame, Detecters, blocks, e)
-    cv.imshow('frame', frame)
+    if frame:
+        MultiLines(frame, Detecters, blocks, e)
+        cv.imshow('frame', frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 # cam.release()
