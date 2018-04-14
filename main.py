@@ -43,13 +43,14 @@ def data_to_send(err):
 def send_data():
     global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     while True:
-        print(e)
+        # print(e)
         # e_abs = map(abs, e)
         e_now = (e[0] + e[1] + e[2] + e[3]) / 4
         p = e_now
         d = e_now - prev_e
         itg = itg + e_now
         pid = p*0.5 + d*10
+        print('pid', pid)
         m0_speed = SP_SPEED + pid
         m1_speed = SP_SPEED - pid
         prev_e = e_now
