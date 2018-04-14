@@ -67,7 +67,7 @@ time.sleep(1)
 while True:
     # ret, frame = cam.read()
     frame = cap.read()
-    if frame.all():
+    if frame != None:
         MultiLines(frame, Detecters, blocks, e)
         cv.imshow('frame', frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
