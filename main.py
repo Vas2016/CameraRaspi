@@ -37,7 +37,7 @@ motor_r = 1
 prev_e = []
 itg = 0
 SP_SPEED = 40
-EV3_IP = "10.42.0.3"
+EV3_IP = "169.254.253.86"
 EV3_PORT = 5090
 
 client = udp_client.SimpleUDPClient(EV3_IP, EV3_PORT)
