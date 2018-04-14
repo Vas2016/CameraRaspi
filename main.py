@@ -4,6 +4,10 @@ import argparse
 import threading
 import time
 import socket
+
+from pythonosc import osc_message_builder
+from pythonosc import udp_client
+
 # from imutils.video import VideoStream
 from imutils.video import WebcamVideoStream
 
@@ -33,13 +37,17 @@ motor_r = 1
 prev_e = []
 itg = 0
 SP_SPEED = 40
+
+client = udp_client.SimpleUDPClient(args.ip, args.port)
+
+# time.sleep(1)
 # sock.connect(('169.254.253.86', 4090))
 cap = cv.VideoCapture(args["camera"])
 
 # cap = WebcamVideoStream(src=args["camera"]).start()
 def data_to_send(err):
-    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
-    return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
+    # global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
+    # return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
 def send_data():
     global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     while True:
@@ -57,7 +65,10 @@ def send_data():
         m1_speed = SP_SPEED - itog
         prev_e = e
         # sock.send(data_to_send(e_now).encode('utf-8'))
-        time.sleep(0.1)
+        client.send_message("/m0", m0_speed)
+        time.sleep(0.02)
+        client.send_message("/m1", m1_speed)
+        time.sleep(0.02)
 
 t1 = threading.Thread(target=send_data)
 t1.daemon = True
