@@ -27,12 +27,18 @@ class ConturDetecter:
             self.prev_cX = self.contourCenterX
             if self.getContourCenter(self.MainContour) != 0:
                 self.contourCenterX = self.getContourCenter(self.MainContour)[0]
+                x2,y2,w2,h2 = cv.boundingRect(self.MainContour)
+                if w2 > (self.width // 2):
+                    if -(self.middleX - self.contourCenterX) >= 0:
+                        self.contourCenterX += w2 // 3
+                    else:
+                        self.contourCenterX -= w2 // 3
                 # if abs(self.prev_cX-self.contourCenterX) > 5:
                 #     self.correctMainContour(self.prev_cX)
             else:
                 self.contourCenterX = 0
-            self.e_q = -(self.middleX - self.contourCenterX) / ((self.width - self.middleX) / 100)
-            self.e =  int((self.middleX-self.contourCenterX) * self.getContourExtent(self.MainContour))
+            self.e = -(self.middleX - self.contourCenterX) / ((self.width - self.middleX) / 100)
+            # self.e =  int((self.middleX-self.contourCenterX) * self.getContourExtent(self.MainContour))
             
             cv.drawContours(self.image,self.MainContour,-1,(0,255,0),3) #Draw Contour GREEN
             cv.circle(self.image, (self.contourCenterX, self.middleY), 7, (255,255,255), -1) #Draw dX circle WHITE
@@ -42,7 +48,8 @@ class ConturDetecter:
             cv.putText(self.image,str(self.e),(self.contourCenterX+20, self.middleY), font, 1,(200,0,200),2,cv.LINE_AA)
             # cv.putText(self.image,str(self.dir),(self.contourCenterX+20, self.middleY-30), font, 1,(200,0,200),2,cv.LINE_AA)
             cv.putText(self.image,"Weight:%.3f"%self.getContourExtent(self.MainContour),(self.contourCenterX+20, self.middleY+35), font, 0.5,(200,0,200),1,cv.LINE_AA)
-        
+        # else:
+            
     def getContourCenter(self, contour):
         M = cv.moments(contour)
         

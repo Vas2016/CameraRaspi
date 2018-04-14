@@ -30,31 +30,33 @@ for q in range(blocks):
 m0_speed = 0
 m1_speed = 0
 motor_r = 1
-prev_e = 0
+prev_e = []
 itg = 0
 SP_SPEED = 40
-sock.connect(('169.254.253.86', 4090))
-# cam = cv.VideoCapture(args["camera"])
+# sock.connect(('169.254.253.86', 4090))
+cap = cv.VideoCapture(args["camera"])
 
-cap = WebcamVideoStream(src=args["camera"]).start()
+# cap = WebcamVideoStream(src=args["camera"]).start()
 def data_to_send(err):
     global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
 def send_data():
     global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
     while True:
-        # print(e)
+        print(e)
         # e_abs = map(abs, e)
-        e_now = (e[0] + e[1] + e[2] + e[3]) / 4
-        p = e_now
-        d = e_now - prev_e
-        itg = itg + e_now
-        pid = p*0.3 + d*2
-        print('pid', pid)
-        m0_speed = SP_SPEED + pid
-        m1_speed = SP_SPEED - pid
-        prev_e = e_now
-        sock.send(data_to_send(e_now).encode('utf-8'))
+        # e_now = (e[0] + e[1] + e[2] + e[3]) / 4
+        # p = e_now
+        # d = e_now - prev_e
+        # itg = itg + e_now
+        # pid = p*0.3 + d*2
+        itog = e[0]*0.15 + e[1]*0.2 + e[2]*0.1 + e[3]*0.1
+        itog = itog * 0.85
+        print('itog', itog)
+        m0_speed = SP_SPEED + itog
+        m1_speed = SP_SPEED - itog
+        prev_e = e
+        # sock.send(data_to_send(e_now).encode('utf-8'))
         time.sleep(0.1)
 
 t1 = threading.Thread(target=send_data)
@@ -65,15 +67,15 @@ time.sleep(1)
 
 
 while True:
-    # ret, frame = cam.read()
-    frame = cap.read()
-    if frame != None:
-        MultiLines(frame, Detecters, blocks, e)
-        cv.imshow('frame', frame)
-    else:
-        cap = WebcamVideoStream(src=args["camera"]).start()
+    ret, frame = cap.read()
+    # frame = cap.read()
+    # if frame != None:
+    MultiLines(frame, Detecters, blocks, e)
+    cv.imshow('frame', frame)
+    # else:
+    #     cap = WebcamVideoStream(src=args["camera"]).start()
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
-# cam.release()
+cap.release()
 cap.stop()
 cv.destroyAllWindows()
