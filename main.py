@@ -37,6 +37,7 @@ motor_r = 1
 prev_e = []
 itg = 0
 SP_SPEED = 30
+prev_e_itog = 0
 ser = serial.Serial(args["serial"], 115200)
 # ser.open()
 ser.flushInput()
@@ -58,7 +59,7 @@ def send_message(topic, mes):
     # return str(m0_speed) + '@' + str(m1_speed) + '@' + str(motor_r) + '@' + str(err)
 qwe = True
 def send_data():
-    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED, qwe
+    global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED, qwe, prev_e_itog
     while qwe:
         print(e)
         # e_abs = map(abs, e)
@@ -67,8 +68,11 @@ def send_data():
         # d = e_now - prev_e
         # itg = itg + e_now
         # pid = p*0.3 + d*2
-        itog = e[0]*0.15 + e[1]*0.2 + e[2]*0.1 + e[3]*0.1
-        itog = itog * 0.6
+        e_itog = e[0]*0.3 + e[1]*0.35 + e[2]*0.2 + e[3]*0.15
+        d = e_itog - prev_e_itog
+        itog = e_itog * 0.2 + d * 1
+
+        prev_e_itog = e_itog
         print('itog', itog)
         m0_speed = SP_SPEED + itog
         m1_speed = SP_SPEED - itog
@@ -76,7 +80,7 @@ def send_data():
         # sock.send(data_to_send(e_now).encode('utf-8'))
         
         send_message("/m", str(int(m0_speed)) +'$' + str(int(m1_speed)))
-        time.sleep(0.1)
+        time.sleep(0.08)
         # send_message("/m1", m1_speed)
         # time.sleep(0.02)
 time.sleep(1)
@@ -103,7 +107,7 @@ while True:
     if cv.waitKey(1) & 0xFF == ord('q'):
         qwe = 0
         break
-t1._delete()
+# t1._delete()
 send_message("/m_stop", 0)
 time.sleep(0.02)
 # client.send_message("/m_stop", 0)
