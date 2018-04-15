@@ -50,7 +50,7 @@ ser.flushInput()
 # time.sleep(1)
 # sock.connect(('169.254.253.86', 4090))
 cap = cv.VideoCapture(args["camera"])
-cap = cv.VideoCapture(args["camera"])
+# cap = cv.VideoCapture(args["camera"])
 def send_message(topic, mes):
     global ser
     ser.write(str(str(topic) + '@' + str(mes) + '@\n').encode('utf-8'))
