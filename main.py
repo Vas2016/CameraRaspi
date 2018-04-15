@@ -36,7 +36,7 @@ m1_speed = 0
 motor_r = 1
 prev_e = []
 itg = 0
-SP_SPEED = 40
+SP_SPEED = 30
 ser = serial.Serial(args["serial"], 115200)
 # ser.open()
 ser.flushInput()
@@ -68,7 +68,7 @@ def send_data():
         # itg = itg + e_now
         # pid = p*0.3 + d*2
         itog = e[0]*0.15 + e[1]*0.2 + e[2]*0.1 + e[3]*0.1
-        itog = itog * 0.4
+        itog = itog * 0.6
         print('itog', itog)
         m0_speed = SP_SPEED + itog
         m1_speed = SP_SPEED - itog
