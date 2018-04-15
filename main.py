@@ -75,8 +75,8 @@ def send_data():
         prev_e = e
         # sock.send(data_to_send(e_now).encode('utf-8'))
         
-        send_message("/m", str(m0_speed) +'$' + str(m1_speed))
-        time.sleep(0.02)
+        send_message("/m", str(int(m0_speed)) +'$' + str(int(m1_speed)))
+        time.sleep(0.1)
         # send_message("/m1", m1_speed)
         # time.sleep(0.02)
 time.sleep(1)
