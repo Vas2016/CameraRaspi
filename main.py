@@ -50,7 +50,7 @@ ser.flushOutput()
 cap = cv.VideoCapture(args["camera"])
 def send_message(topic, mes):
     global ser
-    ser.write(str(topic) + '@' + str(mes) + '@\n'.encode('utf-8'))
+    ser.write(str(topic) + '@' + str(mes) + '@\n')
 # cap = WebcamVideoStream(src=args["camera"]).start()
 # def data_to_send(err):
     # global e, m0_speed, m1_speed, prev_e, motor_r, itg, SP_SPEED
