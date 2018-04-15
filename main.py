@@ -16,7 +16,7 @@ ap.add_argument("-c", "--camera", type=int, default=0,
 	help="camera")
 ap.add_argument("-b", "--blocks", type=int, default=4,
 	help="blocks")
-ap.add_argument("-s", "--serial", type=str, default="/dev/ttyAMA0",
+ap.add_argument("-s", "--serial", type=str, default="/dev/ttyS0",
 	help="serial")
 args = vars(ap.parse_args())
 
