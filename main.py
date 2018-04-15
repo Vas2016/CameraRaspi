@@ -38,9 +38,9 @@ prev_e = []
 itg = 0
 SP_SPEED = 40
 ser = serial.Serial(args["serial"], 115200)
-ser.open()
+# ser.open()
 ser.flushInput()
-ser.flushOutput()
+# ser.flushOutput()
 # EV3_IP = "169.254/.253.86"
 # EV3_PORT = 5090
 
