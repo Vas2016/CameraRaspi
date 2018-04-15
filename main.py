@@ -70,7 +70,8 @@ def send_data():
         # pid = p*0.3 + d*2
         e_itog = e[0]*0.3 + e[1]*0.35 + e[2]*0.2 + e[3]*0.15
         d = e_itog - prev_e_itog
-        itog = e_itog * 0.22 + d * 0.8
+        itg = itg + e_itog
+        itog = e_itog * 0.2 + d * 0.65 + itg * 0.4
 
         prev_e_itog = e_itog
         print('itog', itog)
