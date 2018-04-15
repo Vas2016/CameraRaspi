@@ -30,9 +30,9 @@ class ConturDetecter:
                 x2,y2,w2,h2 = cv.boundingRect(self.MainContour)
                 if w2 > (self.width // 2):
                     if -(self.middleX - self.contourCenterX) >= 0:
-                        self.contourCenterX += w2 // 2.2
+                        self.contourCenterX += int(w2 * 0.4)
                     else:
-                        self.contourCenterX -= w2 // 2.2
+                        self.contourCenterX -= int(w2 * 0.5)
                 # if abs(self.prev_cX-self.contourCenterX) > 5:
                 #     self.correctMainContour(self.prev_cX)
             else:
