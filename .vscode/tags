@@ -1,0 +1,87 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Aprox	../ConturDetecter.py	/^    def Aprox(self, a, b, error):$/;"	kind:member	line:141
+Center	../Utils.py	/^def Center(moments):$/;"	kind:function	line:27
+ConturDetecter	../ConturDetecter.py	/^class ConturDetecter:$/;"	kind:class	line:4
+ConturDetecter.py	../ConturDetecter.py	1;"	kind:file	line:1
+Detecters	../main.py	/^Detecters=[]$/;"	kind:variable	line:32
+ImageGrabber	../test.py	/^class ImageGrabber(threading.Thread):$/;"	kind:class	line:7
+Main	../test.py	/^class Main(threading.Thread):$/;"	kind:class	line:21
+MultiLines	../Utils.py	/^def MultiLines(im, images, slices, cc, errors):$/;"	kind:function	line:6
+Process	../ConturDetecter.py	/^    def Process(self, cCount):$/;"	kind:member	line:12
+RemoveBackground	../Utils.py	/^def RemoveBackground(image, b):$/;"	kind:function	line:36
+RepackImages	../Utils.py	/^def RepackImages(images):$/;"	kind:function	line:17
+Run	../test.py	/^    def Run(self):$/;"	kind:member	line:13
+SP_SPEED	../main.py	/^SP_SPEED = 30$/;"	kind:variable	line:44
+SignDetecter	../main.py	/^class SignDetecter(Process):$/;"	kind:class	line:76
+SignDetecter.py	../SignDetecter.py	1;"	kind:file	line:1
+Utils.py	../Utils.py	1;"	kind:file	line:1
+WebCam	../WebCam.py	/^class WebCam:$/;"	kind:class	line:4
+WebCam.py	../WebCam.py	1;"	kind:file	line:1
+__init__	../ConturDetecter.py	/^    def __init__(self):$/;"	kind:member	line:6
+__init__	../WebCam.py	/^	def __init__(self, src=0):$/;"	kind:member	line:5
+__init__	../main.py	/^    def __init__(self,frame_queue):$/;"	kind:member	line:78
+__init__	../test.py	/^    def __init__(self):$/;"	kind:member	line:22
+__init__	../test.py	/^    def __init__(self, ID):$/;"	kind:member	line:8
+ap	../main.py	/^ap = argparse.ArgumentParser()$/;"	kind:variable	line:17
+approx	../SignDetecter.py	/^        approx = cv.approxPolyDP(c, cv.arcLength(c, True)*0.03, True)$/;"	kind:variable	line:29
+area	../SignDetecter.py	/^        area = cv.contourArea(approx)$/;"	kind:variable	line:30
+args	../main.py	/^args = vars(ap.parse_args())$/;"	kind:variable	line:26
+b_mask	../SignDetecter.py	/^    b_mask = cv.inRange(hsv, lower_blue, upper_blue)$/;"	kind:variable	line:18
+b_mask	../SignDetecter.py	/^    b_mask = cv.medianBlur(b_mask, 3)$/;"	kind:variable	line:20
+blocks	../main.py	/^blocks = args["blocks"]$/;"	kind:variable	line:33
+cap	../SignDetecter.py	/^cap = cv.VideoCapture(0)$/;"	kind:variable	line:5
+cap	../main.py	/^cap = WebCam.WebCam(src=0).start()$/;"	kind:variable	line:60
+complited	../main.py	/^complited = False$/;"	kind:variable	line:30
+crop	../SignDetecter.py	/^            crop = frame[y2:y2+h2, x2:x2+w2]$/;"	kind:variable	line:41
+detect	../main.py	/^    def detect(self,frame2):$/;"	kind:member	line:96
+e	../main.py	/^e = []$/;"	kind:variable	line:36
+frame	../SignDetecter.py	/^frame = []$/;"	kind:variable	line:6
+frame	../main.py	/^frame = cap.read()$/;"	kind:variable	line:63
+frames	../main.py	/^frames = Queue()$/;"	kind:variable	line:27
+frames	../test.py	/^frames = Queue(10)$/;"	kind:variable	line:5
+getContourCenter	../ConturDetecter.py	/^    def getContourCenter(self, contour):$/;"	kind:member	line:123
+getContourExtent	../ConturDetecter.py	/^    def getContourExtent(self, contour):$/;"	kind:member	line:134
+get_frame	../main.py	/^    def get_frame(self):$/;"	kind:member	line:87
+grabber	../test.py	/^grabber = ImageGrabber(0)$/;"	kind:variable	line:35
+help	../main.py	/^	help="blocks")$/;"	kind:variable	line:21
+help	../main.py	/^	help="camera")$/;"	kind:variable	line:19
+help	../main.py	/^	help="serial")$/;"	kind:variable	line:23
+help	../main.py	/^	help="serialOn")$/;"	kind:variable	line:25
+hsv	../SignDetecter.py	/^    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)$/;"	kind:variable	line:10
+itg	../main.py	/^itg = 0$/;"	kind:variable	line:43
+itog	../main.py	/^itog = 0$/;"	kind:variable	line:168
+lower_blue	../SignDetecter.py	/^    lower_blue = np.array([80,110,80])$/;"	kind:variable	line:11
+lower_red	../SignDetecter.py	/^    lower_red = np.array([1,100,80])$/;"	kind:variable	line:13
+main	../test.py	/^main = Main()$/;"	kind:variable	line:36
+main.py	../main.py	1;"	kind:file	line:1
+motor_r	../main.py	/^motor_r = 1$/;"	kind:variable	line:41
+ok	../SignDetecter.py	/^    ok = []$/;"	kind:variable	line:25
+ok	../SignDetecter.py	/^    ok = sorted(ok, key=cv.contourArea)$/;"	kind:variable	line:26
+p1	../main.py	/^p1 = SignDetecter(frames)$/;"	kind:variable	line:202
+prev_e	../main.py	/^prev_e = []$/;"	kind:variable	line:42
+prev_e_itog	../main.py	/^prev_e_itog = 0$/;"	kind:variable	line:45
+put_frame	../main.py	/^def put_frame(ame):$/;"	kind:function	line:220
+qwe	../SignDetecter.py	/^        qwe = 0$/;"	kind:variable	line:47
+qwe	../main.py	/^qwe = 0$/;"	kind:variable	line:242
+qwe	../main.py	/^qwe = True$/;"	kind:variable	line:167
+r_mask	../SignDetecter.py	/^    r_mask = cv.inRange(hsv, lower_red, upper_red)$/;"	kind:variable	line:17
+read	../WebCam.py	/^	def read(self):$/;"	kind:member	line:32
+run	../main.py	/^    def run(self):$/;"	kind:member	line:133
+run	../test.py	/^    def run(self):$/;"	kind:member	line:25
+send_data	../main.py	/^def send_data():$/;"	kind:function	line:169
+send_message	../main.py	/^def send_message(cmd, body):$/;"	kind:function	line:158
+ser	../main.py	/^    ser = serial.Serial(args["serial"], 115200)$/;"	kind:variable	line:47
+servo	../main.py	/^servo = 0$/;"	kind:variable	line:40
+speed	../main.py	/^speed = 15$/;"	kind:variable	line:39
+start	../WebCam.py	/^	def start(self):$/;"	kind:member	line:15
+stop	../WebCam.py	/^	def stop(self):$/;"	kind:member	line:36
+stopProcess	../main.py	/^    def stopProcess(self):$/;"	kind:member	line:93
+test.py	../test.py	1;"	kind:file	line:1
+update	../WebCam.py	/^	def update(self):$/;"	kind:member	line:22
+upper_blue	../SignDetecter.py	/^    upper_blue = np.array([150,255,255])$/;"	kind:variable	line:12
+upper_red	../SignDetecter.py	/^    upper_red = np.array([8,255,255])$/;"	kind:variable	line:14

@@ -2,8 +2,22 @@ import numpy as np
 import cv2
 import time
 from ConturDetecter import *
+import threading
+from functools import wraps
 
-def MultiLines(im, images, slices, cc, errors):
+def delay(delay=0.):
+    """
+    Decorator delaying the execution of a function for a while.
+    """
+    def wrap(f):
+        @wraps(f)
+        def delayed(*args, **kwargs):
+            timer = threading.Timer(delay, f, args=args, kwargs=kwargs)
+            timer.start()
+        return delayed
+    return wrap
+
+def MultiLines(im, images, slices, cc, errors, dir):
     height, width = im.shape[:2]
     sl = int(height/slices);
     
@@ -11,7 +25,7 @@ def MultiLines(im, images, slices, cc, errors):
         part = sl*i
         crop_img = im[part:part+sl, 0:width]
         images[i].image = crop_img
-        images[i].Process(cc)
+        images[i].Process(cc, dir)
         errors[i] = images[i].e
     
 def RepackImages(images):
