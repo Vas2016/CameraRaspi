@@ -50,7 +50,7 @@ class ConturDetecter:
         a  = cv.contourArea(c)
         x2,y2,w2,h2 = cv.boundingRect(c)
        
-        if (M["m00"] == 0) or (a < 200) or (w2/h2 > 1.8):
+        if (M["m00"] == 0) or (a < 200):
             return 70000
         else:
             x = int(M["m10"]/M["m00"])
@@ -59,12 +59,46 @@ class ConturDetecter:
             # y = int(M["m01"]/M["m00"])
             # print(abs(x-self.width))
             return abs(x-self.width/2)
+    def getContourCenterXLeft(self, c):
+        M = cv.moments(c)
+        a  = cv.contourArea(c)
+        x2,y2,w2,h2 = cv.boundingRect(c)
+       
+        if (M["m00"] == 0) or (a < 200):
+            return 70000
+        else:
+            x = int(M["m10"]/M["m00"])
+            # if x < self.width/2:
+                # x = int(M["m10"]/M["m00"])
+                # y = int(M["m01"]/M["m00"])
+                # y = int(M["m01"]/M["m00"])
+                # print(abs(x-self.width))
+            return x
+    def getContourCenterXRight(self, c):
+        M = cv.moments(c)
+        a  = cv.contourArea(c)
+        x2,y2,w2,h2 = cv.boundingRect(c)
+       
+        if (M["m00"] == 0) or (a < 200):
+            return -70000
+        else:
+            x = int(M["m10"]/M["m00"])
+            # if x > self.width/2:
+                # x = int(M["m10"]/M["m00"])
+                # y = int(M["m01"]/M["m00"])
+                # y = int(M["m01"]/M["m00"])
+                # print(abs(x-self.width))
+            return x
     # def 
     # def 
     def Process(self, cCount, direct):
         imgray = cv.cvtColor(self.image,cv.COLOR_BGR2GRAY) #Convert to Gray Scale
         imgray = cv.medianBlur(imgray, 5)
-        ret, thresh = cv.threshold(imgray,100,255,cv.THRESH_BINARY_INV) #Get Threshold
+        # imgray = cv.contrar
+        # thresh =  cv.adaptiveThreshold(imgray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,\
+            # cv.THRESH_BINARY_INV,11,2)
+        ret, thresh = cv.threshold(imgray,130,255,cv.THRESH_BINARY_INV) #Get Threshold
+        # thresh = cv.medianBlur(thresh, 5)
         # cv.imshow('thr', thresh)
         # imgray = cv.cvtColor(self.image,cv.COLOR_BGR2HSV)
         # thresh = cv.inRange(imgray, (0, 0, 0), (150, 255, 128))
@@ -90,9 +124,9 @@ class ConturDetecter:
                     # if M["m00"] != 0:
                 # pre_x = int(M["m10"]/M["m00"])
                 if direct== -1:
-                    self.contours = sorted(self.contours, key=self.getContourCenterX)
+                    self.contours = sorted(self.contours, key=self.getContourCenterXLeft)
                 elif direct== 1:
-                    self.contours = sorted(self.contours, key=self.getContourCenterX, reverse=True)
+                    self.contours = sorted(self.contours, key=self.getContourCenterXRight, reverse=True)
                 else:
                     self.contours = sorted(self.contours, key=self.getContourCenterX22)
                     # self.contours[1] 
@@ -140,8 +174,21 @@ class ConturDetecter:
                 font = cv.FONT_HERSHEY_SIMPLEX
                 cv.putText(self.image,str(self.e),(self.contourCenterX+20, self.middleY), font, 1,(200,0,200),2,cv.LINE_AA)
                 # cv.putText(self.image,str(self.dir),(self.contourCenterX+20, self.middleY-30), font, 1,(200,0,200),2,cv.LINE_AA)
-                cv.putText(self.image,"Weight:%.3f"%cv.contourArea(self.MainContour),(self.contourCenterX+20, self.middleY+35), font, 0.5,(200,0,200),1,cv.LINE_AA)
-                # cv.putText(self.image,"Weight:%.3f"%self.getContourExtent(self.MainContour),(self.contourCenterX+20, self.middleY+35), font, 0.5,(200,0,200),1,cv.LINE_AA)
+                self.approxSize = cv.approxPolyDP(self.MainContour, cv.arcLength(self.MainContour, True)*0.03, True).size/2
+                leftmost = tuple(self.MainContour[self.MainContour[:,:,0].argmin()][0])
+                rightmost = tuple(self.MainContour[self.MainContour[:,:,0].argmax()][0])
+                # def  
+                if self.approxSize == 7:
+                    if abs(self.width/2-leftmost[0]) > abs(self.width/2-rightmost[0]):
+                        if self.height/2-leftmost[1]<0:
+                            self.approxSize = -7
+                    else:
+                        if self.height/2-rightmost[1]<0:
+                            self.approxSize = -7
+                cv.circle(self.image, leftmost, 3, (100,100,255), -1)
+                cv.circle(self.image, rightmost, 3, (100,100,255), -1)
+                cv.putText(self.image,"Size:%.3f"%float(self.approxSize),(self.contourCenterX+20, self.middleY+35), font, 0.5,(200,0,200),1,cv.LINE_AA)
+                # cv.putText(self.image,"W:%.3f"%float(rightmost[0]-leftmost[0]),(self.contourCenterX-40, self.middleY+35), font, 0.5,(200,0,200),1,cv.LINE_AA)
             # else:
         elif cCount > 1:
             if self.contours:

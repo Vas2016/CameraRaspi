@@ -20,7 +20,7 @@ from imutils.video import FPS
 from ConturDetecter import *
 from Utils import *
 
-stopEn = True
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--camera", type=int, default=0, help="camera")
 ap.add_argument("-b", "--blocks", type=int, default=1, help="blocks")
@@ -49,7 +49,7 @@ e = []
 for q in range(blocks):
     e.append(0)
 speed = 15
-servo = 0
+servo = 90
 motor_r = 1
 prev_e = []
 itg = 0
@@ -71,7 +71,11 @@ frame = imutils.resize(frame, width=420)
 time.sleep(2)
 est2 = False
 est = False
+stopEn = True
+sign_direct = True
 direct = 0
+asize = 4
+lineMode = False
 signs = {'cross':0, 'stop':0, 'left':0, 'forward':0, 'right':0, 'e':0}
 
 def maxIndex(a):
@@ -80,9 +84,9 @@ def maxIndex(a):
         if a[i] > a[m]:
             m = i
     return m
-sign_direct = True
+
 def SignDetect():
-    global est, est2, stopEn, signs, direct, sign_direct
+    global est, est2, stopEn, signs, direct, sign_direct, servo, est2, est, stopEn, lineMode
     time.sleep(0.5)
     mmmm = load_model(args["model"])
     @delay(6.0)
@@ -107,25 +111,33 @@ def SignDetect():
             # print(maxIndex(now_pre))
             signs[maxIndex(now_pre)]+=1
             
-            if signs[maxIndex(signs)] > 50:
+            if signs[maxIndex(signs)] > 60:
                 if sign_direct == True:
                     if maxIndex(now_pre) == 'left':
                         # if direct == 0:
-                        servo = 90-25
+                        servo = 90+25
+                        lineMode = False
                         # sign_direct = False
                         # on_direct_sign()
                     elif maxIndex(now_pre) == 'right':
                         # if direct == 0:
-                        servo = 90+25
+                        servo = 90-25
+                        lineMode = False
                         # sign_direct = False
                         # on_direct_sign()
                     elif maxIndex(now_pre) == 'forward':
                         # if direct == 0:
                         servo = 90
+                        lineMode = False
                         # sign_direct = False
                         # on_direct_sign()
                     else:
+                        # lineMode = True
                         servo = 90
+                    if maxIndex(now_pre) == 'stop':
+                        est2 = stopEn
+                    if maxIndex(now_pre) == 'cross':
+                        est = True
                 now_pre = {'cross':0, 'stop':0, 'left':0, 'forward':0, 'right':0, 'e':0}
 
 
@@ -144,27 +156,33 @@ ui2 = False
 
 
 def send_data():
-    global e, servo, speed, prev_e, motor_r, itg, qwe, prev_e_itog, itog, est, ui, t, ui2, t2, est2, stopEn
+    global e, servo, speed, prev_e, motor_r, itg, qwe, prev_e_itog, itog, est, ui, t, ui2, t2, est2, stopEn, lineMode
     @delay(6.0)
     def stop_on():
         global stopEn
         stopEn = True
         print('st_on')
+    @delay(2.2)
+    def cross_call():
+        global ui
+        ui = False
+        print('cross')
     while qwe:
-        # e_itog = e[0] * 0.55 + e[1] * 0.45
-        # e_itog = e[0]
-        # d = e_itog - prev_e_itog
-        # itg = itg + e_itog
-        # itog = e_itog * 0.56 + d * 1.2
-        # itog = e_itog * 0.58 + d * 1.3
-        # itog = 
-        # prev_e_itog = e_itog
-        # print('itog', itog)
-        # m0_speed = SP_SPEED + itog
-        # m1_speed = SP_SPEED - itog
-        # prev_e = e
-        # sock.send(data_to_send(e_now).encode('utf-8'))
-        # servo = 90 - itog
+        if lineMode == True:
+            # e_itog = e[0] * 0.55 + e[1] * 0.45
+            e_itog = e[0]
+            d = e_itog - prev_e_itog
+            # itg = itg + e_itog
+            itog = e_itog * 0.56 + d * 1.2
+            # itog = e_itog * 0.58 + d * 1.3
+            # itog = 
+            prev_e_itog = e_itog
+            # print('itog', itog)
+            # m0_speed = SP_SPEED + itog
+            # m1_speed = SP_SPEED - itog
+            # prev_e = e
+            # sock.send(data_to_send(e_now).encode('utf-8'))
+            servo = 90 - itog
             # if stopEn == True:
         if est2 == True:
             speed = 0
@@ -190,19 +208,21 @@ def send_data():
         if est == True:
             speed = 7
             est = False
-            t = 0
+            # t = 0
             ui = True
+            cross_call()
+
         if ui == True:
-            t+=1
+            # t+=1
             speed = 7
-            if t > 100:
-                ui = False
+            # if t > 100:
+                # ui = False
         else:
             speed = 15
         send_message("s", int(servo))
         # else:
         # speed = 0
-        print(speed, servo, direct)
+        print(speed, servo)
         send_message("m", int(speed))
 
         # time.sleep(0.08)
@@ -232,14 +252,14 @@ fps = FPS().start()
 while True:
     # global frame
 
-    # frame3 = cap.read().copy()
+    frame3 = cap.read().copy()
 
-    # h, w = frame3.shape[:2]
+    h, w = frame3.shape[:2]
     # print(direct)
-    # frame3 = frame3[h // 6 * 3:h, w // 10 * 0:w // 10 * 10]
-    # MultiLines(frame3, Detecters, blocks, 1, e, 0)
+    frame3 = frame3[h // 6 * 3:h, w // 10 * 1:w // 10 * 9]
+    asize = MultiLines(frame3, Detecters, blocks, 1, e, 0)
     cv.imshow('frame', cap.read())
-    # cv.imshow('frame3', frame3)
+    cv.imshow('frame3', frame3)
     
     # else:
     #     cap = WebcamVideoStream(src=args["camera"]).start()

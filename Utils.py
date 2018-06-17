@@ -20,13 +20,15 @@ def delay(delay=0.):
 def MultiLines(im, images, slices, cc, errors, dir):
     height, width = im.shape[:2]
     sl = int(height/slices);
-    
+    s = 0
     for i in range(slices):
         part = sl*i
         crop_img = im[part:part+sl, 0:width]
         images[i].image = crop_img
         images[i].Process(cc, dir)
         errors[i] = images[i].e
+        s = max([s, images[i].approxSize])
+    return s
     
 def RepackImages(images):
     img = images[0].image
