@@ -1,5 +1,5 @@
 # RRO
 
-team VVM - 3st place
+team VVM - the 3rd place
 
 by Vasily Yuryev
